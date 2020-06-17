@@ -45,71 +45,66 @@ public class Game {
     }
     private void generateNumber()
     {
-        int k = random.nextInt(10);
-        int data;
-        if (k < 9)
-            data = 2;
-        else
-            data = 4;
+        if (checkEmpty()) {
+            int k = random.nextInt(10);
+            int data;
+            if (k < 9)
+                data = 2;
+            else
+                data = 4;
 
-        int row, column;
-        do {
-            row = random.nextInt(SIZE);
-            column = random.nextInt(SIZE);
+            int row, column;
+            do {
+                row = random.nextInt(SIZE);
+                column = random.nextInt(SIZE);
+            }
+            while (matrix[row][column] != 0);
+
+            matrix[row][column] = data;
         }
-        while (matrix[row][column] != 0);
-
-        matrix[row][column] = data;
+        else return;
     }
 
     private boolean checkMoveTop(int row, int column)
     {
         int data = matrix[row][column];
-        for (int i = row - 1; i >= 0 ; i--) {
-            if (matrix[i][column] != 0) {
-                if (matrix[i][column] == data) {
+            if (matrix[row - 1][column] != 0) {
+                if (matrix[row - 1][column] == data) {
                     return true;
                 }
             }
-        }
         return false;
     }
 
     private boolean checkMoveLeft(int row, int column)
     {
         int data = matrix[row][column];
-        for (int j = column - 1; j >= 0; j--) {
-            if (matrix[row][j] != 0) {
-                if (matrix[row][j] == data) {
+            if (matrix[row][column - 1] != 0) {
+                if (matrix[row][column - 1] == data) {
                     return true;
                 }
             }
-        }
         return false;
     }
 
     private boolean checkMoveBottom(int row, int column) {
         int data = matrix[row][column];
-        for (int i = row + 1; i < SIZE; i++) {
-            if (matrix[i][column] != 0) {
-                if (matrix[i][column] == data) {
+            if (matrix[row + 1][column] != 0) {
+                if (matrix[row + 1][column] == data) {
                     return true;
                 }
             }
-        }
         return false;
     }
 
     private boolean checkMoveRight(int row, int column)
     {
         int data = matrix[row][column];
-        for (int j = column + 1; j < SIZE; j++) {
-            if (matrix[row][j] != 0) {
-                if (matrix[row][j] == data) {
+            if (matrix[row][column + 1] != 0) {
+                if (matrix[row][column + 1] == data) {
                     return true;
                 }
             }
-        }
         return false;
     }
 
@@ -268,7 +263,6 @@ public class Game {
                     return;
             }
         }
-
         status = Status.Lose;
     }
 

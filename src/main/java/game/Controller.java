@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class  Controller implements Initializable {
     public Pane panel;
     public Label lblScore;
     Game game = new Game();

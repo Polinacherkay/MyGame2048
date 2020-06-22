@@ -45,7 +45,7 @@ public class  Controller implements Initializable {
         draw();
     }
 
-    public void setSceneAndSetupListeners(Scene scene)
+    void setSceneAndSetupListeners(Scene scene)
     {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override

@@ -16,7 +16,7 @@ public class Game {
         initialize();
     }
 
-    public int get(int i, int j)
+    int get(int i, int j)
     {
         return matrix[i][j];
     }
@@ -43,6 +43,7 @@ public class Game {
             generateNumber();
         }
     }
+
     private void generateNumber()
     {
         if (checkEmpty()) {
@@ -65,49 +66,6 @@ public class Game {
         else return;
     }
 
-    private boolean checkMoveTop(int row, int column)
-    {
-        int data = matrix[row][column];
-            if (matrix[row - 1][column] != 0) {
-                if (matrix[row - 1][column] == data) {
-                    return true;
-                }
-            }
-        return false;
-    }
-
-    private boolean checkMoveLeft(int row, int column)
-    {
-        int data = matrix[row][column];
-            if (matrix[row][column - 1] != 0) {
-                if (matrix[row][column - 1] == data) {
-                    return true;
-                }
-            }
-        return false;
-    }
-
-    private boolean checkMoveBottom(int row, int column) {
-        int data = matrix[row][column];
-            if (matrix[row + 1][column] != 0) {
-                if (matrix[row + 1][column] == data) {
-                    return true;
-                }
-            }
-        return false;
-    }
-
-    private boolean checkMoveRight(int row, int column)
-    {
-        int data = matrix[row][column];
-            if (matrix[row][column + 1] != 0) {
-                if (matrix[row][column + 1] == data) {
-                    return true;
-                }
-            }
-        return false;
-    }
-
     private void moveTop(int row, int column)
     {
         int data = matrix[row][column];
@@ -121,10 +79,7 @@ public class Game {
             {
                 if (matrix[i][column] == data)
                 {
-                    matrix[i][column] *= 2;
-                    if (matrix[i][column] == WIN_SCORE)
-                        status = Status.Win;
-                    score += matrix[i][column];
+                    sideMove(i, column);
                     isDelete = true;
                 }
                 break;
@@ -142,16 +97,14 @@ public class Game {
         int endRow = row;
         int endColumn = column;
         boolean isDelete = false;
+        int j = column;
 
         for (int i = row + 1; i < SIZE; i++) {
             if (matrix[i][column] != 0)
             {
                 if (matrix[i][column] == data)
                 {
-                    matrix[i][column] *= 2;
-                    if (matrix[i][column] == WIN_SCORE)
-                        status = Status.Win;
-                    score += matrix[i][column];
+                    sideMove(i, column);
                     isDelete = true;
                 }
                 break;
@@ -169,16 +122,14 @@ public class Game {
         int endRow = row;
         int endColumn = column;
         boolean isDelete = false;
+        int i = row;
 
         for (int j = column - 1; j >= 0; j--) {
             if (matrix[row][j] != 0)
             {
                 if (matrix[row][j] == data)
                 {
-                    matrix[row][j] *= 2;
-                    if (matrix[row][j] == WIN_SCORE)
-                        status = Status.Win;
-                    score += matrix[row][j];
+                    sideMove(row, j);
                     isDelete = true;
                 }
                 break;
@@ -196,16 +147,14 @@ public class Game {
         int endRow = row;
         int endColumn = column;
         boolean isDelete = false;
+        int i = row;
 
         for (int j = column + 1; j < SIZE; j++) {
             if (matrix[row][j] != 0)
             {
                 if (matrix[row][j] == data)
                 {
-                    matrix[row][j] *= 2;
-                    if (matrix[row][j] == WIN_SCORE)
-                        status = Status.Win;
-                    score += matrix[row][j];
+                    sideMove(row, j);
                     isDelete = true;
                 }
                 break;
@@ -214,6 +163,14 @@ public class Game {
         }
         if (!isDelete)
             matrix[endRow][endColumn] = data;
+    }
+
+    private void sideMove(int i, int j)
+    {
+        matrix[i][j] *= 2;
+        if (matrix[i][j] == WIN_SCORE)
+            status = Status.Win;
+        score += matrix[i][j];
     }
 
     private boolean checkEmpty()
@@ -227,46 +184,58 @@ public class Game {
         return false;
     }
 
-    public void checkMove()
+    private void checkMove()
     {
         if (checkEmpty())
             return;
 
         for (int j = 0; j < SIZE; j++) {
             for (int i = 1; i < SIZE; i++) {
-                boolean check = checkMoveTop(i, j);
-                if (check)
-                    return;
+                int data = matrix[i][j];
+                if (matrix[i - 1][j] != 0) {
+                    if (matrix[i - 1][j] == data) {
+                        return;
+                    }
+                }
             }
         }
 
         for (int j = 0; j < SIZE; j++) {
             for (int i = SIZE - 2; i >= 0; i--) {
-                boolean check = checkMoveBottom(i, j);
-                if (check)
-                    return;
+                int data = matrix[i][j];
+                if (matrix[i + 1][j] != 0) {
+                    if (matrix[i + 1][j] == data) {
+                        return;
+                    }
+                }
             }
         }
 
         for (int i = 0; i < SIZE; i++) {
             for (int j = 1; j < SIZE; j++) {
-                boolean check = checkMoveLeft(i, j);
-                if (check)
-                    return;
+                int data = matrix[i][j];
+                if (matrix[i][j - 1] != 0) {
+                    if (matrix[i][j - 1] == data) {
+                        return;
+                    }
+                }
             }
         }
 
         for (int i = 0; i < SIZE; i++) {
             for (int j = SIZE - 2; j >= 0; j--) {
-                boolean check = checkMoveRight(i, j);
-                if (check)
-                    return;
+                int data = matrix[i][j];
+                if (matrix[i][j + 1] != 0) {
+                    if (matrix[i][j + 1] == data) {
+                        return;
+                    }
+                }
             }
         }
         status = Status.Lose;
     }
 
-    public void move(Direction direction)
+    void move(Direction direction)
     {
         if (status != Status.Played)
             return;
@@ -308,8 +277,7 @@ public class Game {
         checkMove();
     }
 
-
-    public int getScore() {
+    int getScore() {
         return score;
     }
 

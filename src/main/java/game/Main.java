@@ -20,7 +20,7 @@ public class Main extends Application {
         controller.setSceneAndSetupListeners(scene);
         primaryStage.show();
     }
-    public static void main(String[] args) {
+    static void main(String[] args) {
         launch(args);
     }
 }
